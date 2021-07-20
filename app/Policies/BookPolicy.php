@@ -11,10 +11,14 @@ class BookPolicy
 {
     use HandlesAuthorization;
 
-
     public function viewAny(User $user)
     {
         return Response::allow();
+    }
+
+    public function view(User $user, Book $book)
+    {
+        return $book->created_by == $user->id;
     }
 
     public function create(User $user)

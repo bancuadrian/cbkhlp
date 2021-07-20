@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Filters\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, Filterable;
 
     protected $fillable = [
         'author_id', 'title', 'published_date', 'created_by'
