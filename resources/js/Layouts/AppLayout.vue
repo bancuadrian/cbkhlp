@@ -23,6 +23,12 @@
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('authors.index')" :active="route().current('authors.index')">
+                                    Authors
+                                </jet-nav-link>
+                            </div>
+
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('books.index')" :active="route().current('books.index')">
                                     Books
                                 </jet-nav-link>

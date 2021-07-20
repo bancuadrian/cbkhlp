@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Manage Books
+                Manage Authors
             </h2>
         </template>
         <div class="py-12">
@@ -17,25 +17,20 @@
                         </div>
                     </div>
                     <button @click="openModal()"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create New
-                        Book
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Create New Author
                     </button>
                     <table class="table-fixed w-full">
                         <thead>
                         <tr class="bg-gray-100">
                             <th class="px-4 py-2 w-20">No.</th>
-                            <th class="px-4 py-2">Title</th>
-                            <th class="px-4 py-2">Author</th>
-                            <th class="px-4 py-2">Published Date</th>
+                            <th class="px-4 py-2">Name</th>
                             <th class="px-4 py-2">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="row in data">
                             <td class="border px-4 py-2">{{ row.id }}</td>
-                            <td class="border px-4 py-2">{{ row.title }}</td>
-                            <td class="border px-4 py-2">{{ row.author.name }}</td>
-                            <td class="border px-4 py-2">{{ row.published_date }}</td>
+                            <td class="border px-4 py-2">{{ row.name }}</td>
                             <td class="border px-4 py-2">
                                 <button @click="edit(row)"
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
@@ -66,32 +61,12 @@
                                         <div class="">
                                             <div class="mb-4">
                                                 <label for="exampleFormControlInput1"
-                                                       class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+                                                       class="block text-gray-700 text-sm font-bold mb-2">Name:</label>
                                                 <input type="text"
                                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                       id="exampleFormControlInput1" placeholder="Enter Title"
-                                                       v-model="form.title">
-                                                <div v-if="errors.title" class="text-red-500">{{errors.title }}</div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="exampleFormControlInput2"
-                                                       class="block text-gray-700 text-sm font-bold mb-2">Author:</label>
-                                                <select
-                                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                    id="exampleFormControlInput2" v-model="form.author_id"
-                                                    placeholder="Enter Author">
-                                                        <option v-for="author in authors" v-bind:value="author.id">{{ author.name }}</option>
-                                                </select>
-                                                <div v-if="errors.author_id" class="text-red-500">{{ errors.author_id }}</div>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label for="exampleFormControlInput2"
-                                                       class="block text-gray-700 text-sm font-bold mb-2">Published Date(Y-m-d):</label>
-                                                <input type="text"
-                                                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                       id="exampleFormControlInput1" placeholder="Enter Date(Y-m-d)"
-                                                       v-model="form.published_date">
-                                                <div v-if="errors.published_date" class="text-red-500">{{ errors.published_date }}</div>
+                                                       id="exampleFormControlInput1" placeholder="Enter Author's Name"
+                                                       v-model="form.name">
+                                                <div v-if="errors.name" class="text-red-500">{{errors.name}}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -142,8 +117,7 @@ export default {
             message: ''
         },
         flash: '',
-        data: {},
-        authors: {}
+        data: {}
     },
     data() {
         return {
@@ -171,7 +145,7 @@ export default {
             }
         },
         save: function (data) {
-            this.$inertia.post('/books', data, {
+            this.$inertia.post('/authors', data, {
                 onSuccess: page => {
                     this.reset();
                     this.closeModal();
@@ -187,18 +161,18 @@ export default {
         },
         update: function (data) {
             data._method = 'PUT';
-            this.$inertia.post('/books/' + data.id, data, {
+            this.$inertia.post('/authors/' + data.id, data, {
                 onSuccess: page => {
                     this.reset();
                     this.closeModal();
                 },
-                onError: errors => {}
+                    onError: errors => {}
             })
         },
         deleteRow: function (data) {
             if (!confirm('Are you sure want to remove?')) return;
             data._method = 'DELETE';
-            this.$inertia.post('/books/' + data.id, data)
+            this.$inertia.post('/authors/' + data.id, data)
             this.reset();
             this.closeModal();
         }

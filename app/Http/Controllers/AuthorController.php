@@ -3,83 +3,84 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class AuthorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Create the controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
+    public function __construct()
+    {
+        $this->authorizeResource(Author::class, 'author');
+    }
+
+
     public function index()
     {
-        //
+        $data = Author::orderBy('name', 'asc')
+            ->get();
+
+        return Inertia::render('Authors', [
+            'data' => $data
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(Request $request, Author $author)
     {
-        //
+        $rules = [
+            'name' => ['required', 'min:3', "unique:App\Models\Author,name"],
+        ];
+        $validationMessages = [
+            'title.unique' => 'This title by this author was already created'
+        ];
+
+        Validator::make($request->all(), $rules, $validationMessages)
+            ->validate();
+
+        $author->fill($request->all());
+        $author->created_by = Auth::user()->id;
+        $author->save();
+
+        return Redirect::route('authors.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Author $author)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Author $author)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Author $author)
     {
-        //
+        $rules = [
+            'name' => ['required', 'min:3', "unique:App\Models\Author,name," . $author->id],
+        ];
+        $validationMessages = [
+            'title.unique' => 'This title by this author was already created'
+        ];
+
+        Validator::make($request->all(), $rules, $validationMessages)
+            ->validate();
+
+        $author->fill($request->all());
+        $author->created_by = Auth::user()->id;
+        $author->save();
+
+        return Redirect::route('authors.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Author $author)
     {
-        //
+        $hasBooks = Book::where('author_id', $author->id)->count();
+
+        if($hasBooks) {
+            return redirect()->back()->with('flash-message','message');
+        }
+
+        $author->delete();
+
+        return Redirect::route('authors.index');
     }
 }
