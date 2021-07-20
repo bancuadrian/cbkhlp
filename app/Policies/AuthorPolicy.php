@@ -24,7 +24,7 @@ class AuthorPolicy
             $query->where('created_by', $user->id);
         };
 
-        Book::addGlobalScope('user_filter', $fn);
+        Author::addGlobalScope('user_filter', $fn);
     }
 
     public function viewAny(User $user)
