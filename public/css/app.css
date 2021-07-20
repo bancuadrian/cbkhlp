@@ -1472,11 +1472,11 @@ select {
 .border-b {
 	border-bottom-width: 1px;
 }
-.border-t-4 {
-	border-top-width: 4px;
-}
 .border-r {
 	border-right-width: 1px;
+}
+.border-t-4 {
+	border-top-width: 4px;
 }
 .border-gray-300 {
 	--tw-border-opacity: 1;
@@ -2153,10 +2153,6 @@ select {
 		margin-left: 1.5rem;
 	}
 
-	.sm\:ml-0 {
-		margin-left: 0px;
-	}
-
 	.sm\:block {
 		display: block;
 	}
@@ -2175,10 +2171,6 @@ select {
 
 	.sm\:h-10 {
 		height: 2.5rem;
-	}
-
-	.sm\:h-20 {
-		height: 5rem;
 	}
 
 	.sm\:h-screen {
@@ -2319,10 +2311,6 @@ select {
 
 	.sm\:text-left {
 		text-align: left;
-	}
-
-	.sm\:text-right {
-		text-align: right;
 	}
 
 	.sm\:align-middle {
