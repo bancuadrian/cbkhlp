@@ -13,10 +13,13 @@ make build-and-run
 
 ## Login
 
-While building, data is seeded so you won't have to Login with the following email / password combinations:
+While building, data is seeded so you won't have to. 
+Login with the following email / password combinations:
 
-* user1@example.com / password
+* user1@example.com / password 
 * user2@example.com / password
+
+Users are created with 3 authors and 10 books per author. See DatabaseSeeder for more details.
 
 Go to http://127.0.0.1:8000/login and login or http://127.0.0.1:8000/register to register
 
