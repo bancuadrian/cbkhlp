@@ -20,7 +20,7 @@ class BookController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Book::class, 'books');
+        $this->authorizeResource(Book::class, 'book');
     }
 
     public function index()
@@ -64,11 +64,22 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
-        Validator::make($request->all(), [
-            'title' => ['required'],
-            'author_id' => ['required'],
-            'published_date' => ['required'],
-        ])->validate();
+        $bookUniqueRule = Rule::unique(Book::class)
+            ->where(function ($query) use ($request) {
+                return $query->where('title', $request->get('title'))
+                    ->where('author_id', $request->get('author_id'));
+            })->ignore($book->id);
+        $rules = [
+            'title' => ['required', $bookUniqueRule],
+            'author_id' => ['required', 'exists:App\Models\Author,id'],
+            'published_date' => ['required', 'date_format:Y-m-d']
+        ];
+        $validationMessages = [
+            'title.unique' => 'This title by this author was already created'
+        ];
+
+        Validator::make($request->all(), $rules, $validationMessages)
+            ->validate();
 
         if ($request->has('id')) {
             Book::find($request->input('id'))->update($request->all());
