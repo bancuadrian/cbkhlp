@@ -58,4 +58,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function authors()
+    {
+        return $this->hasMany(Author::class, 'created_by', 'id');
+    }
 }

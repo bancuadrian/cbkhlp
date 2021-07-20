@@ -12,4 +12,14 @@ class Author extends Model
     protected $fillable = [
         'name', 'created_by'
     ];
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'author_id', 'id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

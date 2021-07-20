@@ -15,7 +15,7 @@ class BookFilter extends Filter
      */
     public function title(string $value = null): Builder
     {
-        return $this->builder->where('title', 'like', "{$value}%");
+        return $this->builder->where('title', 'like', "%{$value}%");
     }
 
     /**

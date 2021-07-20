@@ -1577,6 +1577,9 @@ select {
 .p-6 {
 	padding: 1.5rem;
 }
+.p-12 {
+	padding: 3rem;
+}
 .px-4 {
 	padding-left: 1rem;
 	padding-right: 1rem;
